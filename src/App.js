@@ -2,12 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import React from "react";
 import Home from "./pages/home";
 import Backpack from "./pages/backpack";
-import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { connect } from "react-redux";
 
-export default function App() {
+function App({ pokemons }) {
+  console.log(pokemons)
   return (
     <div className="App">
+      {JSON.stringify(pokemons)}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/backpack" element={<Backpack />} />
@@ -15,3 +17,9 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  pokemons: state.pokemons
+})
+
+export default connect(mapStateToProps)(App)

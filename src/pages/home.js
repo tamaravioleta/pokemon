@@ -3,8 +3,10 @@ import Axios from "axios";
 import React from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
+import PokemonActions from '../redux/reducers/pokemonReducer'
+import { connect } from "react-redux";
 
-function Home() {
+function Home({ pokemons, getAllPokemons }) {
   const [pokemonName, setPokemonName] = useState("");
   const [catchPokemon, setCatchPokemon] = useState([]);
   const [pokemonPil, setPokemonPil] = useState(false);
@@ -36,29 +38,33 @@ function Home() {
   // (nama item, nilai) setItem u/ menambahkan data
   // stringify mengubah objek javascript menjadi teks JSONdan menyimpan teks JSON dalam sebuah string (membuat string JSON dari objek / array)
 
-  const searchPokemon = () => {
-    Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-      .then((response) => {
-        console.log(response);
-        setPokemon({
-          id: response.data.id,
-          name: pokemonName,
-          img: response.data.sprites.front_default,
-          type: response.data.types[0].type.name,
-          height: response.data.height,
-          hp: response.data.stats[0].base_stat,
-          attack: response.data.stats[1].base_stat,
-          defense: response.data.stats[2].base_stat,
-          speed: response.data.stats[3].base_stat,
-        });
-        setPokemonPil(true);
-      })
-      .catch((error) => {
-        alert(
-          "NOT FOUND - try to write another pokemon & Make sure that you write the pokemon in lowercase"
-        );
-      });
-  };
+  const getPokemons = () => {
+    getAllPokemons('asdfasdf', 'werwer')
+  }
+
+  // const searchPokemon = () => {
+  //   Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+  //     .then((response) => {
+  //       console.log(response);
+  //       setPokemon({
+  //         id: response.data.id,
+  //         name: pokemonName,
+  //         img: response.data.sprites.front_default,
+  //         type: response.data.types[0].type.name,
+  //         height: response.data.height,
+  //         hp: response.data.stats[0].base_stat,
+  //         attack: response.data.stats[1].base_stat,
+  //         defense: response.data.stats[2].base_stat,
+  //         speed: response.data.stats[3].base_stat,
+  //       });
+  //       setPokemonPil(true);
+  //     })
+  //     .catch((error) => {
+  //       alert(
+  //         "NOT FOUND - try to write another pokemon & Make sure that you write the pokemon in lowercase"
+  //       );
+  //     });
+  // };
 
   const pokemonc = () => {
     if (catchPokemon.find((item) => item.id === pokemon.id)) {
@@ -77,11 +83,16 @@ function Home() {
     setPokemonPil(false);
   };
 
+  const addPokemon = () => {
+    // isi...
+  }
+
   return (
     <div className="App">
       <div className="Title">
         <h1>
-          <u>List Form Pokemon</u>{" "}
+          <u onClick={getPokemons}>List Form Pokemon</u>{" "}
+          {JSON.stringify(pokemons)}
         </h1>
         {/* // ======== BACKPACK ========= */}
         <div>
@@ -97,7 +108,7 @@ function Home() {
             setPokemonName(event.target.value);
           }}
         />
-        <button onClick={searchPokemon}>Search Pokemon</button>
+        <button onClick={addPokemon}>Search Pokemon</button>
       </div>
 
       <div className="DisplayPokemon">
@@ -135,4 +146,11 @@ function Home() {
   );
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  pokemons: state.pokemons
+})
+const mapDispatchToProps = (dispatch) => ({
+  getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
