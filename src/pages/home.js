@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import PokemonActions from '../redux/reducers/pokemonReducer'
 import { connect } from "react-redux";
 
-function Home({ pokemons, getAllPokemons }) {
-  const [pokemonName, setPokemonName] = useState("");
+function Home({ pokemons, getAllPokemons, pokemonName, setPokemonName }) {
   const [catchPokemon, setCatchPokemon] = useState([]);
   const [pokemonPil, setPokemonPil] = useState(false);
   const [pokemon, setPokemon] = useState({
@@ -104,6 +103,7 @@ function Home({ pokemons, getAllPokemons }) {
         <input
           type="text"
           style={{ color: "black" }}
+          value={pokemonName}
           onChange={(event) => {
             setPokemonName(event.target.value);
           }}
@@ -147,10 +147,12 @@ function Home({ pokemons, getAllPokemons }) {
 }
 
 const mapStateToProps = (state) => ({
-  pokemons: state.pokemons
+  pokemons: state.pokemons,
+  pokemonName: state.pokemons.pokemonName
 })
 const mapDispatchToProps = (dispatch) => ({
-  getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1))
+  getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1)),
+  setPokemonName: (data) => dispatch(PokemonActions.setPokemonName(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
