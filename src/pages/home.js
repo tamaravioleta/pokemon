@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import PokemonActions from '../redux/reducers/pokemonReducer'
 import { connect } from "react-redux";
 
-function Home({ pokemons, getAllPokemons }) {
+function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon }) {
   const [pokemonName, setPokemonName] = useState("");
   const [catchPokemon, setCatchPokemon] = useState([]);
   const [pokemonPil, setPokemonPil] = useState(false);
@@ -87,6 +87,10 @@ function Home({ pokemons, getAllPokemons }) {
     // isi...
   }
 
+  const setDeletePokemon = (id) => {
+    deletePokemon()
+  }
+
   return (
     <div className="App">
       <div className="Title">
@@ -108,7 +112,8 @@ function Home({ pokemons, getAllPokemons }) {
             setPokemonName(event.target.value);
           }}
         />
-        <button onClick={addPokemon}>Search Pokemon</button>
+        <button onClick={() => setDeletePokemon()}>Search Pokemon</button>
+        <button onClick={() => getPokemon('charmander')}>Search Pokemon 2</button>
       </div>
 
       <div className="DisplayPokemon">
@@ -150,7 +155,9 @@ const mapStateToProps = (state) => ({
   pokemons: state.pokemons
 })
 const mapDispatchToProps = (dispatch) => ({
-  getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1))
+  getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1)),
+  getPokemon: (name) => dispatch(PokemonActions.getPokemon(name)),
+  deletePokemon: (name) => dispatch(PokemonActions.deletePokemon(name))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
