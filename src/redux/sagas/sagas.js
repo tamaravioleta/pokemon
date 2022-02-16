@@ -2,20 +2,15 @@ import { call, put, takeLatest } from 'redux-saga/effects'
 import { getPokemon } from '../../services/api'
 import PokemonActions, { PokemonDataTypes } from '../reducers/pokemonReducer'
 
-function* mySaga() {
-  yield takeLatest(PokemonDataTypes.GET_POKEMON, fetchPokemon)
+export function* pokemonRequest() {
+  yield takeLatest(PokemonDataTypes.POKEMON_REQUEST, pokemonRequestAPI)
 }
 
-function* fetchPokemon(action) {
+export function* pokemonRequestAPI(action) {
   try {
-    console.log(action)
     const pokemon = yield call(getPokemon, action.name)
-    console.log(pokemon)
-    yield put(PokemonActions.setPokemon(pokemon.data))
+    yield put(PokemonActions.pokemonSuccess(pokemon.data))
   } catch (e) {
-    console.log(e)
-    yield put({ type: 'USER_FETCH_FAILED', message: e.message })
+    yield put(PokemonActions.pokemonFailure(e))
   }
 }
-
-export default mySaga

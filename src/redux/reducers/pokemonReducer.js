@@ -3,9 +3,12 @@ import { createReducer, createActions } from 'reduxsauce'
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
   getAllPokemon: ['data', 'abc'],
-  getPokemon: ['name'],
   setPokemon: ['pokemons'],
-  deletePokemon: ['nameToBeDeleted']
+  deletePokemon: ['nameToBeDeleted'],
+
+  pokemonRequest: ['name'],
+  pokemonSuccess: ['data'],
+  pokemonFailure: ['err'],
 })
 
 export const PokemonDataTypes = Types
@@ -49,10 +52,40 @@ export const deletePokemon = (state, action) => {
   }
 }
 
+export const pokemonRequest = (state, action) => {
+  return {
+    ...state,
+    isFetching: true,
+    error: null,
+    data: []
+  }
+}
+
+export const pokemonSuccess = (state, action) => {
+  const data = action.data
+  return {
+    ...state,
+    isFetching: false,
+    error: null,
+    data
+  }
+} 
+
+export const pokemonFailure = (state, action) => {
+  return {
+    ...state,
+    isFetching: false,
+    data: [],
+    error: action.err
+  }
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_ALL_POKEMON]: getPokemons,
-  [Types.GET_POKEMON]: getPokemon,
   [Types.SET_POKEMON]: setPokemon,
-  [Types.DELETE_POKEMON]: deletePokemon
+  [Types.DELETE_POKEMON]: deletePokemon,
+  [Types.POKEMON_REQUEST]: pokemonRequest,
+  [Types.POKEMON_SUCCESS]: pokemonSuccess,
+  [Types.POKEMON_FAILURE]: pokemonFailure,
 })

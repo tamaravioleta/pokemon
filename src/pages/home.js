@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import PokemonActions from '../redux/reducers/pokemonReducer'
 import { connect } from "react-redux";
 
-function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon }) {
+function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon, isFetching, error }) {
   const [pokemonName, setPokemonName] = useState("");
   const [catchPokemon, setCatchPokemon] = useState([]);
   const [pokemonPil, setPokemonPil] = useState(false);
@@ -96,8 +96,16 @@ function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon }) {
       <div className="Title">
         <h1>
           <u onClick={getPokemons}>List Form Pokemon</u>{" "}
-          {JSON.stringify(pokemons)}
         </h1>
+        {(() => {
+          if (isFetching) {
+            return <p>Loading...</p>
+          } else if (error) {
+            return <p>{error.message}</p>
+          } else {
+            <p>{pokemons.name}</p>
+          }
+        })()}
         {/* // ======== BACKPACK ========= */}
         <div>
           <Link to="/backpack">
@@ -152,11 +160,13 @@ function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon }) {
 }
 
 const mapStateToProps = (state) => ({
-  pokemons: state.pokemons
+  pokemons: state.pokemons.data,
+  isFetching: state.pokemons.isFetching,
+  error: state.pokemons.error
 })
 const mapDispatchToProps = (dispatch) => ({
   getAllPokemons: (data, data1) => dispatch(PokemonActions.getAllPokemon(data, data1)),
-  getPokemon: (name) => dispatch(PokemonActions.getPokemon(name)),
+  getPokemon: (name) => dispatch(PokemonActions.pokemonRequest(name)),
   deletePokemon: (name) => dispatch(PokemonActions.deletePokemon(name))
 })
 

@@ -2,7 +2,7 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { reducer as pokemonReducer } from './reducers/pokemonReducer'
 import createSagaMiddleware from 'redux-saga'
-import mySaga from './sagas/sagas'
+import { allSagas } from './sagas'
 
 
 const initRedux = (initialState: any, options: any) => {
@@ -16,7 +16,7 @@ const initRedux = (initialState: any, options: any) => {
   
   const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))
 
-  sagaMiddleware.run(mySaga)
+  sagaMiddleware.run(allSagas)
   return store
 }
 

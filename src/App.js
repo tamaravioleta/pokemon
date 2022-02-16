@@ -9,7 +9,6 @@ function App({ pokemons }) {
   console.log(pokemons)
   return (
     <div className="App">
-      {JSON.stringify(pokemons)}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/backpack" element={<Backpack />} />
