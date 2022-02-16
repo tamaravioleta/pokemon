@@ -103,7 +103,7 @@ function Home({ pokemons, getAllPokemons, getPokemon, deletePokemon, isFetching,
           } else if (error) {
             return <p>{error.message}</p>
           } else {
-            <p>{pokemons.name}</p>
+            return <p>{pokemons.name}</p>
           }
         })()}
         {/* // ======== BACKPACK ========= */}
