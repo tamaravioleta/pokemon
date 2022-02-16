@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { call, put, takeLatest } from 'redux-saga/effects'
+import { getPokemon } from '../../services/api'
 import PokemonActions, { PokemonDataTypes } from '../reducers/pokemonReducer'
 
 function* mySaga() {
@@ -7,9 +7,6 @@ function* mySaga() {
 }
 
 function* fetchPokemon(action) {
-  function getPokemon (pokemonName) {
-    return axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-  }
   try {
     console.log(action)
     const pokemon = yield call(getPokemon, action.name)
